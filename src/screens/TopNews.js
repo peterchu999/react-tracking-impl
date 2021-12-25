@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTracking } from "react-tracking";
 import ArticleCard from "../components/ArticleCard";
 import { useFetchTopNewsArticle } from "../services/news/Queries/useFetchTopNewsArticle";
 
@@ -10,7 +11,13 @@ const TopNews = () => {
     data: articleList,
   } = useFetchTopNewsArticle();
 
+  const { trackEvent, Track } = useTracking({
+    // initial data for this component and it's child only
+    data: { page: "TopNews" },
+  });
+
   const onRefreshClick = () => {
+    trackEvent({ type: "product", data: { eventName: "refresh_feed" } });
     refetch();
   };
 
@@ -36,11 +43,13 @@ const TopNews = () => {
         </button>
       </div>
       <div class="row d-flex">
-        {articleList.map(({ title, description, url }) => {
-          return (
-            <ArticleCard url={url} titl={title} description={description} />
-          );
-        })}
+        <Track>
+          {articleList.map(({ title, description, url }) => {
+            return (
+              <ArticleCard url={url} titl={title} description={description} />
+            );
+          })}
+        </Track>
       </div>
     </>
   );

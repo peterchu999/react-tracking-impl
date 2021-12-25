@@ -1,8 +1,13 @@
 import * as React from "react";
+import { useTracking } from "react-tracking";
 const ArticleCard = ({ title, description, url }) => {
+  const { trackEvent } = useTracking();
+
   const handleClick = () => {
+    trackEvent({ type: "product", data: { eventName: "click_go_to_source" } });
     window.open(url, "_blank");
   };
+
   return (
     <div class="col-sm-6 mb-3">
       <div class="card">

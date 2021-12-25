@@ -4,6 +4,6 @@ Read the article about this at: ....
 
 ## Branching
 
-- `master`: Base Code
-- `direct`: using 3rdParty Tracking Directly
-- `rtracking`: using React Tracking Implementation
+- `master`: base code
+- `direct`: using 3rdParty tracking directly
+- `rtracking`: using React Tracking implementation
