@@ -56,7 +56,12 @@ const TopNews = () => {
       <div class="row d-flex">
         {articleList.map(({ title, description, url }) => {
           return (
-            <ArticleCard url={url} titl={title} description={description} />
+            <ArticleCard
+              url={url}
+              titl={title}
+              description={description}
+              page={page}
+            />
           );
         })}
       </div>
