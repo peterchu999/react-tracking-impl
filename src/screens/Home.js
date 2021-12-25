@@ -15,7 +15,8 @@ const Home = () => {
     data: articleList,
   } = useFetchHomeArticle({
     onError: (err) => {
-      DDlog.error("error_fetch", {
+      const eventName = "error_fetch";
+      DDlog.error(eventName, {
         page,
         errorReason: JSON.stringify(err, null, 4),
       });
