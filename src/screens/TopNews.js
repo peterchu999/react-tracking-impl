@@ -1,6 +1,11 @@
 import * as React from "react";
 import ArticleCard from "../components/ArticleCard";
+import DDlog from "../mock3rdParty/DataDog";
+import MixPanel from "../mock3rdParty/MixPanel";
 import { useFetchTopNewsArticle } from "../services/news/Queries/useFetchTopNewsArticle";
+import { v4 as uuid } from "uuid";
+
+const page = "TopNews";
 
 const TopNews = () => {
   const {
@@ -8,9 +13,22 @@ const TopNews = () => {
     isFetching,
     refetch,
     data: articleList,
-  } = useFetchTopNewsArticle();
+  } = useFetchTopNewsArticle({
+    onError: (err) => {
+      const eventName = "error_fetch";
+      DDlog.error(eventName, {
+        page,
+        errorReason: JSON.stringify(err, null, 4),
+      });
+    },
+  });
 
   const onRefreshClick = () => {
+    const eventName = "refresh_feed";
+    const unique_id = uuid();
+    MixPanel.track(eventName, unique_id, {
+      page,
+    });
     refetch();
   };
 

@@ -1,6 +1,11 @@
 import * as React from "react";
 import ArticleCard from "../components/ArticleCard";
+import DDlog from "../mock3rdParty/DataDog";
+import MixPanel from "../mock3rdParty/MixPanel";
+import { v4 as uuid } from "uuid";
 import { useFetchHomeArticle } from "../services/news/Queries/useFetchHomeArticle";
+
+const page = "Home";
 
 const Home = () => {
   const {
@@ -8,10 +13,24 @@ const Home = () => {
     isFetching,
     refetch,
     data: articleList,
-  } = useFetchHomeArticle();
+  } = useFetchHomeArticle({
+    onError: (err) => {
+      DDlog.error("error_fetch", {
+        page,
+        errorReason: JSON.stringify(err, null, 4),
+      });
+    },
+  });
+
   const onRefreshClick = () => {
+    const eventName = "refresh_feed";
+    const unique_id = uuid();
+    MixPanel.track(eventName, unique_id, {
+      page,
+    });
     refetch();
   };
+
   if (isFetching) {
     return (
       <h2 class="p-2">
