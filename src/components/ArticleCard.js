@@ -1,14 +1,12 @@
 import * as React from "react";
-import { v4 as uuid } from "uuid";
+import Heap from "../mock3rdParty/Heap";
 
-import MixPanel from "../mock3rdParty/MixPanel";
-
-const ArticleCard = ({ title, description, url, page }) => {
+const ArticleCard = ({ title, description, url, page, user }) => {
   const handleClick = () => {
     const eventName = "click_go_to_source";
-    const unique_id = uuid();
-    MixPanel.track(eventName, unique_id, {
+    Heap.track(eventName, {
       page,
+      user,
     });
     window.open(url, "_blank");
   };

@@ -1,13 +1,14 @@
 import * as React from "react";
 import ArticleCard from "../components/ArticleCard";
 import DDlog from "../mock3rdParty/DataDog";
-import MixPanel from "../mock3rdParty/MixPanel";
-import { v4 as uuid } from "uuid";
 import { useFetchHomeArticle } from "../services/news/Queries/useFetchHomeArticle";
+import Heap from "../mock3rdParty/Heap";
+import { useFetchCurrentUser } from "../services/users/Queris/useFetchCurrentUser";
 
 const page = "Home";
 
 const Home = () => {
+  const { data: user } = useFetchCurrentUser();
   const {
     isError,
     isFetching,
@@ -18,6 +19,7 @@ const Home = () => {
       const eventName = "error_fetch";
       DDlog.error(eventName, {
         page,
+        user,
         errorReason: JSON.stringify(err, null, 4),
       });
     },
@@ -25,9 +27,9 @@ const Home = () => {
 
   const onRefreshClick = () => {
     const eventName = "refresh_feed";
-    const unique_id = uuid();
-    MixPanel.track(eventName, unique_id, {
+    Heap.track(eventName, {
       page,
+      user,
     });
     refetch();
   };
@@ -61,6 +63,7 @@ const Home = () => {
               titl={title}
               description={description}
               page={page}
+              user={user}
             />
           );
         })}

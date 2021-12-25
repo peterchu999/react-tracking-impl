@@ -4,10 +4,13 @@ import DDlog from "../mock3rdParty/DataDog";
 import MixPanel from "../mock3rdParty/MixPanel";
 import { useFetchTopNewsArticle } from "../services/news/Queries/useFetchTopNewsArticle";
 import { v4 as uuid } from "uuid";
+import { useFetchCurrentUser } from "../services/users/Queris/useFetchCurrentUser";
+import Heap from "../mock3rdParty/Heap";
 
 const page = "TopNews";
 
 const TopNews = () => {
+  const { data: user } = useFetchCurrentUser();
   const {
     isError,
     isFetching,
@@ -18,6 +21,7 @@ const TopNews = () => {
       const eventName = "error_fetch";
       DDlog.error(eventName, {
         page,
+        user,
         errorReason: JSON.stringify(err, null, 4),
       });
     },
@@ -25,8 +29,8 @@ const TopNews = () => {
 
   const onRefreshClick = () => {
     const eventName = "refresh_feed";
-    const unique_id = uuid();
-    MixPanel.track(eventName, unique_id, {
+    Heap.track(eventName, {
+      user,
       page,
     });
     refetch();
@@ -61,6 +65,7 @@ const TopNews = () => {
               titl={title}
               description={description}
               page={page}
+              user={user}
             />
           );
         })}
