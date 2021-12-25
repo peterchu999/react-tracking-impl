@@ -13,6 +13,7 @@ const fetchHomeArticle = async () => {
 export const useFetchHomeArticle = (options) => {
   return useQuery("fetchEverythingTech", fetchHomeArticle, {
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
     ...options,
   });
 };
